@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <button onClick="startF()"> onload </button>
+
+    <br>
+    <p id="draw"></p>
+
+<script>
+    
+var zxy = new Array(2)
+var end = [[1,2,3],[4,5,6],[7,8,0]];
+
+var play = new Array(3);
+for(i = 0; i <= 2; i++) {
+    play[i] = new Array(3);
+}
+
+function rc(cc) {
+    var rr = Math.random()*9
+    var e = 0
+    rr = Math.floor(rr)
+    if (cc[rr] == undefined) {
+        e= rc(cc)
+    }
+    else {
+        e = rr
+        return e
+    }
+    return e
+}
+
+function startF() {
+
+    var cc = [1,2,3,4,5,6,7,8,0];
+    
+
+    for(j = 0; j <= 2; j++) {
+        for(k = 0; k <= 2; k++) {
+            var r = Math.random()*9;
+            r = Math.floor(r);
+            if(cc[r] == 0) {
+                zxy[0] = k
+                zxy[1] = j
+            }
+            if(cc[r] == undefined) {
+                r = rc(cc)
+            }
+            play[j][k] = cc[r];
+            delete cc[r];
+        }
+    }
+
+    drawgame()
+
+}
+
+function drawgame() {
+
+    var drawg = ""
+    for(d = 0; d <= 2; d++) {
+        for(dd = 0; dd <= 2; dd++) {
+            drawg += play[d][dd]+" "
+        }
+        drawg += "<br>"
+    }
+    document.querySelector("#draw").innerHTML=drawg
+
+}
+
+function checkend() {
+
+    for(i = 0; i <= 2; i++) {
+        for(j = 0; j <= 2; j++) {
+            if(end[i][j] != play[i][j]) {
+                return false
+            }
+        }
+    }
+
+    document.querySelector("#draw").innerHTML="congratulations!"
+
+}
+
+window.addEventListener("keydown",(e)=>{
+
+    if(e.key == 'w') {
+        if(zxy[1] > 0) {
+            play[zxy[1]][zxy[0]] = play[zxy[1]-1][zxy[0]]
+            zxy[1] -= 1
+            play[zxy[1]][zxy[0]] = 0
+        }
+    }
+
+    if(e.key == 'a') {
+        if(zxy[0] > 0) {
+            play[zxy[1]][zxy[0]] = play[zxy[1]][zxy[0]-1]
+            zxy[0] -= 1
+            play[zxy[1]][zxy[0]] = 0
+        }
+    }
+
+    if(e.key == 's') {
+        if(zxy[1] < 2) {
+            play[zxy[1]][zxy[0]] = play[zxy[1]+1][zxy[0]]
+            zxy[1] += 1
+            play[zxy[1]][zxy[0]] = 0
+        }
+    }
+
+    if(e.key == 'd') {
+        if(zxy[0] < 2) {
+            play[zxy[1]][zxy[0]] = play[zxy[1]][zxy[0]+1]
+            zxy[0] += 1
+            play[zxy[1]][zxy[0]] = 0
+        }
+    }
+
+    drawgame()
+    checkend()
+
+}
+
+)
+
+</script>
+
+</body>
+</html>
